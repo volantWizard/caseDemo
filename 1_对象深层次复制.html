@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var obj1 = {
+				a:1,
+				b:{
+					aa:2
+				
+				},
+				c:['s']
+			} 
+			//获得对象类型
+		    function classs(a){
+		        return Object.prototype.toString.call(a);
+		    }
+			//执行深层复制、浅层复制
+			function clone(obj1){
+			    //判断obj1 是什么类型，就创建什么对象
+			   	var obj = classs(obj1) === '[object Object]'? {}:[];
+			    //执行复制功能
+			    for (var attr in obj1) {
+			    	if(classs(obj1[attr]) !== '[object Object]'&& classs(obj1[attr]) !== '[object Array]'){
+			    		//不是对象直接复制
+			    		obj[attr] = obj1[attr]
+			    	}else { //是对象的话，继续判断
+		    			//obj.b = {}; 把克隆的东西要付给父对象的对应的attr属性
+		    			obj[attr] = clone(obj1[attr]);
+			    	}
+			    }
+			    return obj;
+			}
+			
+			//利用Jquery的$深层次 
+//			$.extend(true,{},{});
+			
+			//利用递归思想，循环判断一下是{}，还是[];
+			function deepClone(obj){
+			    var newObj = obj.constructor===Object ? {}:[];
+			    for (var attr in obj) {
+			    	console.log(typeof obj[attr] );
+			    	if (typeof obj[attr] !== 'object') {
+			    		newObj[attr] = obj[attr];
+			    	}else {
+			    		newObj[attr] = deepClone(obj[attr]);
+			    	}
+			    }
+			    return newObj;
+			}
+			console.log(deepClone(obj1));
+			
+			var foo = {
+				bar: function() { return this.baz; },
+				baz: 1
+				};
+				console.dir(deepClone);
+			(function(){
+			return typeof arguments[0]();
+			})(foo.bar);
+			var url = 'asdfasdfasdf?a=c&key=asdf&asd=1111';
+			function sear(url){
+				var items = url.split('?')[1].split('&');
+				console.log(items);
+				var data = {};
+				for (var i = 0; i < items.length; i++) {
+					var arr = items[i].split('=');
+					data[arr[0]]= arr[1];
+				}
+			    return data;
+			}
+			console.log(sear(url));
+			var arr = ['sd',1];
+			function isArray(obj){
+				if (obj.constructor === Array) {
+					alert(obj + '是数组')
+				}else {
+					alert(obj + '不是数组')
+				}
+				
+			}
+			isArray([]);
+			function Dog(){
+			    this.wow = function (){
+			        alert('wow');
+			    }
+			    this.yelp = function (){
+			        this.wow();
+			    }
+			}
+			function MadDog(){
+			    Dog.call(this);
+			    this.yelp();
+			}
+			setInterval(MadDog,500);
+			
+		</script>
+	</body>
+</html>

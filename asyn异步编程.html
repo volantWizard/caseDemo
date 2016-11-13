@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+//			function fn1(callback){
+//			    setTimeout(function (){
+//			        setTimeout(function (){
+//			            alert('fn1执行');
+//			        },1000);
+//			        callback();
+//			    },1000)
+//			};
+			function f2(){
+			    alert('fn2执行')
+			}
+//			fn1(fn2);
+
+			var c = $();
+			c.on('done',f2);
+			var f1 = function (){
+			     setTimeout(function (){
+			        setTimeout(function (){
+			            alert('fn1执行');
+			        },1000);
+			        c.trigger('done');
+			    },1000)
+			}
+			
+			
+			f1();
+		</script>
+	</body>
+</html>
