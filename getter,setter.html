@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--1.什么是getter，什么是setter？
+
+　　getter 是一种获得属性值的方法，setter是一种设置属性值的方法。getter负责查询值，它不带任何参数，setter则负责设置键值，值是以参数的形式传递，在他的函数体中，一切的return都是无效的。和普通属性不同的是，存储器属性在只声明了get或set时，对于读和写是两者不可兼得的，当它只拥有了getter方法，那么它仅仅只读，同样的，当它只有setter方法，那么您读到的永远都是undefined。-->
+		<!--2.怎么定义？
+
+　　有2种办法：
+
+在对象初始化的时候定义
+在对象定义后的时候定义
+-->
+		<script type="text/javascript">
+			//标准的Get和Set访问器的实现：
+			function Field(val){  
+			    this.value = val;  
+			} 
+			Field.prototype = {  
+			    get value(){  
+			        return this._value;  
+			    },  
+			    set value(val){  
+			        this._value = val;  
+			    }
+			};
+			var field = new Field("test");
+			field.value="test2";
+			//field.value will now return "test2"
+			//我们常用的实现方法可能是这样的：
+			function Field(val){
+			    var value = val;
+			    
+			    this.getValue = function(){
+			        return value;
+			    };
+			    
+			    this.setValue = function(val){
+			        value = val;
+			    };
+			}
+			var field = new Field("test");
+			field.setValue("test2")
+			field.getValue() // return "test2" 
+			
+			//在DOM元素上Get和Set访问器的实现：
+			HTMLElement.prototype.__defineGetter__("description", function () { 
+			          return this.desc; 
+			}); 
+			HTMLElement.prototype.__defineSetter__("description", function (val) { 
+			          this.desc = val; 
+			}); 
+			document.body.description = "Beautiful body"; 
+			// document.body.description will now return "Beautiful body";
+			
+			//通过Object.defineProperty实现访问器：
+//　　将来ECMAScript标准的扩展对象的方法会通过Object.defineProperty来实现，这也是为什么IE8就是通过这种方法来实现get和set访问器，看来微软还是很有远见的，遗憾的是目前只有IE8+和Chrome 5.0+支持，其它的浏览器都不支持，而且IE8+也只支持DOM元素，不过将来的版本将和Chrome一样支持普通的Javascript对象。
+//　　DOM元素上的Get和Set访问器的实现：
+			Object.defineProperty(document.body, "description", {   
+			    get : function () {       
+			        return this.desc;  
+			    },    
+			    set : function (val) { 
+			        this.desc = val;    
+			    } 
+			}); 
+			document.body.description = "Content container"; 
+			// document.body.description will now return "Content container"
+			
+			//普通对象的Get和Set访问器的实现:
+			var lost = {
+			    loc : "Island"
+			};    
+			Object.defineProperty(lost, "location", {
+			    get : function () {
+			        return this.loc;
+			    },
+			    set : function (val) {
+			        this.loc = val;
+			    }
+			});
+			lost.location = "Another island";
+			// lost.location will now return "Another island"
+		</script>
+	</body>
+</html>
