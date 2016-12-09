@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			.continer{
+				height:auto;position: relative; margin: 10px auto;border:1px solid #000;}
+			
+			.continer div{
+				transition:.5s;
+				margin-bottom:10px;width:240px;position: absolute;
+				}
+			.continer div img{width:100%;border:1px solid #ccc;}
+		</style>
+	</head>
+<body>
+<div class="continer" id="div1">
+	<!--<div>
+		<img src="http://img02.tooopen.com/images/20141229/sl_107003776898.jpg" alt="" />
+	</div>-->
+</div>
+<script src="jsonp.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	/*
+		设置一张图片的width 
+	*/
+	var iW = 240; //图片的width
+	var iM = 10;//间隙的距离
+	var outerW = iW+iM;
+	var onOff = true;
+	var clienW = document.documentElement.clientWidth;
+	
+	var col = Math.floor(clienW/outerW);
+	
+	div1.style.width = col * outerW - iM + 'px';
+	
+	var arrL = []; 
+	var arrT = [];
+	
+	var page = 1;
+	
+	for(var i=0;i<col;i++){
+		arrL.push(i*outerW);
+		arrT.push(0);
+	}
+	
+	/*
+		接口：
+			'http://www.wookmark.com/api/json/popular?page='+page+'&callback=?'
+	*/
+	
+	setPage();	
+	function setPage(){
+		jsonp({
+			url:'http://www.wookmark.com/api/json/popular',
+			data:{
+				page:page
+			},
+			succ:function(data){
+				//console.log(data);
+				data.forEach(function(e,i){
+					var img = document.createElement('img');
+					var div = document.createElement('div');
+					/*
+						有可能数据中的值为0
+						0/num = 非数字字符串，如果运算就会变成NaN
+					*/
+					var iH = iW/e.width*e.height;
+					//如果计算的值为NaN，就为0
+					iH = isNaN(iH)?0:iH;
+					
+					//console.log('图片的宽度：'+e.width+'|||| 图片的高度：'+e.height)
+					
+					
+					img.style.cssText = 'width:'+iW+'px;height:'+iH+'px';
+					img.src = e.preview;
+					div.appendChild(img);
+					var index = pageIndex();
+					div.style.cssText = 'top:'+arrT[index]+'px;left:'+arrL[index]+'px';
+					console.log(arrT[index],index);
+					div1.appendChild(div);
+					arrT[index]+= iH+10;
+					/*
+						onerror将坏掉的图片更换	 
+					*/
+					img.onerror = function(){
+						div.removeChild(img);
+						var img2 = new Image();
+						img2.src = 'http://www.wookmark.com/images/thumbs/621070_wookmark.jpg';
+						img2.style.cssText = 'width:'+iW+'px;height:'+iH+'px';
+						div.appendChild(img2);
+					}
+					//console.log(iH);
+				});
+				onOff = true;
+			}
+		});
+	}
+	
+	//当缩放窗口的时候
+	window.onresize = function(){
+			/*
+				从新计算有多少列
+				从新计算div1的宽度
+			*/
+			var clienW = document.documentElement.clientWidth;
+	
+			var col = Math.floor(clienW/outerW);
+			
+			div1.style.width = col * outerW - iM + 'px';
+			
+			/*
+				比如之前为4列，现在为3列，数组要清空
+				[0,0,0,0]
+				[0,0,0]
+			*/
+			arrL.length = 0; 
+			arrT.length = 0;
+			
+			//设置初始值
+			for(var i=0;i<col;i++){
+				arrL.push(i*outerW);
+				arrT.push(0);
+			}
+			
+			//找到所有的div，从新计算位置
+			var divs = div1.getElementsByTagName('div');
+			for(var i=0;i<divs.length;i++){
+				var index = pageIndex();
+				divs[i].style.cssText = 'top:'+arrT[index]+'px;left:'+arrL[index]+'px';
+//				console.log(arrT)
+				arrT[index] += (divs[i].scrollHeight+10);
+			}	
+	};
+	
+	
+	window.onscroll = function(){
+		var index = pageIndex();
+		//800    300 + 800
+		if(arrT[index]  <= window.innerHeight+document.body.scrollTop){
+			if(!onOff){return};
+			onOff = false;
+			page++;
+			setPage();
+		}
+	}
+	
+	//找到最小高度
+	function pageIndex(){
+		var index = 0;
+		var arrNum = arrT[0];
+		console.log(arrNum,arrT);
+		for(var i=1;i<arrT.length;i++){
+			if(arrT[i] < arrNum){
+				arrNum = arrT[i];
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	
+//	arrL = [0,250,500,750]
+//	arrT = [410,710,400,70]
+	
+	
+	
+//	console.log(arrT)
+	
+	
+</script>
+</body>
+</html>
