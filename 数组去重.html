@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			var arr = ['a',1,'b',1,'1','b'];
+			//思想问题
+			
+			function removeRepeat(arr){
+				////利用数组的indexof,看是否能找到，早不到，就证明没有，找得到就不要放里面了
+			    var newArr = [];
+			    for (var i = 0; i < arr.length; i++) {
+			    	if (newArr.indexOf(arr[i]) == -1 ) {
+			    		newArr.push(arr[i]);
+			    	}
+			    }
+			    return newArr;
+			}
+			console.log(removeRepeat(arr));
+			
+			function removeRepeat1(arr){
+			    //利用对象的key值的唯一性；
+			    var obj = {};
+			    var newArr = [];
+			    for (var i = 0; i < arr.length; i++) {
+			    	if (!obj[typeof arr[i] + arr[i]]) {
+			    		obj[typeof arr[i] +arr[i]] = 1;
+			    		newArr.push(arr[i]);
+			    	}
+			    }
+			    return newArr;
+			}
+			console.log(removeRepeat1(arr));
+			
+			
+			function obj(arr){
+			    var newArr = [];
+			    for (var i = 0; i < arr.length; i++) {
+			    	if (newArr.indexOf(arr[i])=== -1) {
+			    		newArr.push(arr[i]);
+			    	}
+			    }
+			    return newArr;
+			}
+			console.log(obj(arr));
+			
+			function obj1(arr){
+			    var newArr = [];
+			    var obj = {};
+			    for (var i = 0; i < arr.length; i++) {
+			    	if (!obj[typeof arr[i]+arr[i]]) {
+			    		obj[typeof arr[i]+arr[i]] = 1;
+			    		newArr.push(arr[i]);
+			    	}
+			    
+			    }
+			    return newArr;
+			}
+		</script>
+	</body>
+</html>
