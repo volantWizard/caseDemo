@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<!--Vue实例--构造器-->
+		<!--实例化vue时，需要传入一个选项对象，包含：数据、模板、挂载元素、方法、生命周期钩子等选项-->
+		<!--扩展Vue构造器-->
+		<!--例如：
+		var MyComponent = Vue.extend({
+			//扩展选项
+		})
+		// 所有的 `MyComponent` 实例都将以预定义的扩展选项被创建
+		var myComponentInstance = new MyComponent()
+		-->
+		
+		<!--属性与方法-->
+		<!--每个Vue实例都会代理其data对象里所有的属性,双向影象-->
+		<script type="text/javascript">
+			var data = {a:1}
+			var vm = new Vue({
+				el:'#example',
+				data:data
+			})
+			console.log(vm.a===data.a)
+			//设置属性也会影响到原始数据
+			vm.a = 2;
+			console.log(data.a);
+			
+			//设置原始数据的属性，也会影响代理
+			data.a=3
+			console.log(vm.a);
+			//注意：只有这些被代理的属性时相应的，如果在实例创建之后添加新的属性到市里上，它不会触发试图更新。
+			//除了data属性，其它属性和方法都有前缀$,已便区分代理的data属性
+			
+			vm.$data = data //true
+			vm.$el === document.getelementById('example') //true
+			vm.$watch('a',function (newVal,oldVal){
+			    //回掉
+			})
+			//注意不要在实例属性或者回掉函数中使用箭头函数，因为，箭头函数绑定父上下文，所以this,不指向vue实例
+		/*
+			//实例生命周期--参照生命周期示意图
+			vue2.0				Description	
+			
+			beforeCreate		组件实例刚被创建,组件属性计算之前,如data属性
+			created				组件实例创建完成,属性已绑定,但DOM还未生成,$el属性还不存在
+			beforeMount			模板编译/挂载之前
+			mounted				模板编译/挂载之后
+			mounted				模板编译/挂载之后(不保证组件已在document中)
+			beforeUpdate		组件更新之前
+			updated				组件更新之后
+			activated			for keep-alive ,组件被激活时调用
+			deactivated			for keep-alive,组件被移除时调用
+			beforeDestory		组件销毁钱调用
+			destoryed			组件销毁后调用
+		*/	
+		</script>
+		
+	</body>
+</html>
