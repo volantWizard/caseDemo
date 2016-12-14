@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--简单的说，我们打开一个页面，这个页面是个单页应用：http://www.this-is-a-spa.com/
+所以它仅仅只有一个页面，不过作者却做了好几个 URL：
+
+http://www.this-is-a-spa.com/a
+http://www.this-is-a-spa.com/b
+http://www.this-is-a-spa.com/c
+...
+这些 URL 不会直接传给服务器，而是会被浏览器消化处理掉.
+
+这样做，我们可以：
+
+当浏览器读取到其中一个注册到前端路由中的 URL 请求时，比如 http://www.this-is-a-spa.com/a 时，可以触发预先写好的事件 A，所以当访问到这个 URL 后就可以直接触发到事件。在编写的时候可以用 <a href="/a">Event A</a> 来触发事件，而可以不用 addEventListener("click", ...) 这种写法，当项目逻辑比较复杂的时候，这种组织方式比写一大堆事件注册要好很多.（当然上 SPA 一般都用到了框架，这种方式只是一种选择）
+用户可以收藏 http://www.this-is-a-spa.com/a 至收藏夹，打开后直接触发 /a 的事件（然后就自动加载数据或是什么别的事情），而没有做前端路由的 SPA 则达不到这样的效果，其 URL 从头到尾都是不变的.
+所以~
+
+什么是前端路由：路由交给浏览器处理就算是吧？有没有教科书式的标准定义？
+什么时候适合用：SPA 就可以用，其实还是看产品需求.
+优点：如上；
+缺点：前端开发麻烦？还需要学习一个？如果也算缺点吧.-->
+		<!--在单页面应用中，前端通常需要一套路由机制，这样当url发生变化时就可以做出一些处理，从而让页面显示不同的内容。Backbone及Angular里面内置的都有一套路由实现，但有时候可能并不想使用整个框架，只需要路由处理的部分，那么下面就来看一下如何用JavaScript实现前端路由。-->
+		<div class="container"> 
+			<nav class="mainMenu"> 
+				<ul> 
+					<li><a href="#/">首页</a></li> 
+					<li><a href="#/page1">页面1</a></li> 
+					<li><a href="#/page2">页面2</a></li> 
+					<li><a href="#/page3">页面3</a></li> 
+					<li><a href="#/page4">页面4</a></li> 
+				</ul> 
+			</nav> 
+			<div class="content">
+				
+			</div> 
+		</div>
+		<!--这里有几个带#号的锚链接，点击不同的锚链接url里会产生不同的hash，如#/page1、#/page2等，这个值可以通过location.hash获取。
+
+同时，每次hash的变化我们还可以通过onhashchange事件来监听，然后做出相应的处理，下面就来看一下具体的实现：-->
+		<script type="text/javascript">;
+		
+			;(function() {
+				function Router() {}
+					Router.prototype.route = function(path, callback) {
+						var url = location.hash.slice(1) || '/'; 
+						// 刷新时的处理 
+						window.addEventListener('load', function () {
+							if ( url == path ) { callback&&callback(); } 
+						}, false);
+						// hash变化时的处理
+						window.addEventListener('hashchange', function () { 
+							url = location.hash.slice(1) || '/';
+							if ( url == path ) { 
+								callback&&callback(); 
+							} 
+						}, false);
+					};
+					window.Router = new Router(); 
+			})();
+			
+			//Router注册，注册方式就是Router.route(path, callback)的格式：
+			var content = document.querySelectorAll('.content'); 
+			// 测试函数，这里可以放一些ajax处理之类的 
+			function loadContent ( text ) {
+				content[0].innerHTML = text; 
+			}
+			// 注意：这里的path要和html里面锚链接对应 // 如：‘#/’对应‘/’, '#/page2'对应'/page2' 
+			Router.route('/', function () { loadContent('这是首页'); }); 
+			Router.route('/page1', function () { loadContent('这是页面1'); }); 
+			Router.route('/page2', function () { loadContent('这是页面2'); }); 
+			Router.route('/page3', function () { loadContent('这是页面3'); }); 
+			Router.route('/page4', function () { loadContent('这是页面4'); });
+		</script>
+		
+	</body>
+</html>
