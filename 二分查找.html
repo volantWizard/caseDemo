@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//二分查找(又称折半查找) ,利用数组不变，查找范围不变！
+			var arr = [0,2,4,6,8,8.5,9,11];
+			console.log(getIndex(arr,8));
+			function getIndex(arr,num){
+				var start = 0, end = arr.length -1 ;
+				while(start<=end){
+					var mid = Math.floor((end + start)/2);
+					if (num == arr[mid]) {
+						return mid ;
+					}else if (num<arr[mid]) {
+						end = mid-1;
+					}else{
+						start = mid +1;
+					}
+				}
+				return '不存在' ;
+			}
+			
+			
+			console.log(binarySearch(arr, 8));
+			function binarySearch(A, x) {
+				  var low = 0, high = A.length - 1;
+				  while (low <= high) {
+				    var mid = Math.floor((low + high) / 2); //下取整   
+				    if (x == A[mid]) {
+				      return mid;
+				    }
+				    if (x < A[mid]) {
+				      high = mid - 1;
+				    }
+				    else {
+				      low = mid + 1;
+				    }
+				  }
+				  return -1;
+			}
+		</script>
+	</body>
+</html>
