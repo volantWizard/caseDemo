@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--当对数据进行操作时：可用：
+			
+			直接在模板中使用表达式
+			filter  |  ;
+			mothod:function ;
+			computed:function;
+			watch:{};
+		-->
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+		<!--1-直接表达式操作数据，缺点：模板过重，难以维护-->
+		<!--<div id="example">
+			{{message.split('').reverse().join('')}}
+		</div>-->
+		<!--2-绑定计算属性
+			好处：计算后的数据保存在缓存中，
+			是否重新计算---取决于依赖的数据是否发生变换？如果依赖数据没有变换：则直接从缓存中取值，反之重新计算取值。如果再有其它计算属性依赖于此计算属性
+			则也会更新
+		-->
+		<!--
+			method:没有缓存，每次都要调用函数才能获取值
+		-->
+		<!--
+			watch:作用，当观察的数据或参数变化是，调用对应的回掉函数
+		-->
+		<div id="example1">
+			<p>{{message}}</p>
+			<p>{{asdf | reversed}}</p>
+			<p>{{message.split('').reverse().join('')}}</p>
+			<p>{{reversedMessage}}</p>
+			<p>{{reversedMessage1()}}</p>
+			<p>computed: {{fullName1}}</p>
+			<p>watch: {{fullName}}</p>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el:'#example1',
+				data:{
+					message:'hello',
+					asdf:'hello',
+					firstName:'Foo',
+					lastName:'Bar',
+					fullName:'Foo Bar'
+				},
+				filters:{
+					reversed:function (value){
+					   return	 value.split('').reverse().join('');
+					}
+				},
+				computed:{  //函数实际相当于----getter
+					reversedMessage:function(){
+						return this.message.split('').reverse().join('');
+					},
+					fullName1:function (){
+						return this.firstName+' '+this.lastName;
+					}
+				},
+				methods:{
+					reversedMessage1:function(){
+						return this.message.split('').reverse().join('');	
+					}
+				},
+				watch:{ //观察vue实例上数据的变化，当数据变化时，对应的回掉就会响应（回调），通常用作：执行异步操作或开销较大的操作；
+					firstName:function (val){//默认是getter
+					    this.fullName = val+" " + this.lastName;
+					},
+					lastName:function (val){
+						this.fullName = this.firstName +' '+val;					    
+					}
+				}
+				
+			})
+		</script>
+	</body>
+</html>
