@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--数据绑定：常用于：
+			
+			1：操作元素的class
+			
+			2：操作元素的style
+			
+			使用v-bind:class='表达式'\v-bind:style='表达式';
+			表达式  = '字符串'\对象\数组等
+		-->
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+		<div id="example" v-bind:class='active'>123</div>
+		<div id="example1" class="static" v-bind:class='{ active: isActive, "text-danger": hasError}'>456</div>
+		<div id="example2" v-bind:class='classObject'>789</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el:'#example',
+				data:{
+					active:'actived123'
+				}
+			});
+			var vm1 = new Vue({
+				el:'#example1',
+				data:{
+					isActive:true,
+					hasError:false
+				}
+			});
+			var vm2 = new Vue({
+				el:'#example2',
+				data:{
+					classObject: {
+					    active: true,
+					    'text-danger': false
+					}
+				}
+			});
+		</script>
+	</body>
+</html>
