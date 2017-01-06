@@ -18,13 +18,24 @@
 		<div id="example" v-bind:class='active'>123</div>
 		<div id="example1" class="static" v-bind:class='{ active: isActive, "text-danger": hasError}'>456</div>
 		<div id="example2" v-bind:class='classObject'>789</div>
+		<div id="example3" v-bind:class='classObject1'>10</div>
+		<!--<div id="example4" v-bind:class='[activeClass , errorClass]'>11</div>-->
+		<!--<div id="example4" v-bind:class='[isActive? activeClass:"" , errorClass]'>11</div>-->
+		<div id="example4" v-bind:class='[{active:isActive} , errorClass]'>11</div>
+		<my-component class="baz boo"></my-component>
+		<div id="example5" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">12</div>
+		<div id="example6" v-bind:style="styleObject">13</div>
+		
 		<script type="text/javascript">
+			//1.直接绑定数据是class
 			var vm = new Vue({
 				el:'#example',
 				data:{
 					active:'actived123'
 				}
 			});
+			//以下用于切换，class操作
+			//2.传入 对象，数据真假决定是否显示class，
 			var vm1 = new Vue({
 				el:'#example1',
 				data:{
@@ -32,6 +43,7 @@
 					hasError:false
 				}
 			});
+			//3.直接传入data里的属性对象
 			var vm2 = new Vue({
 				el:'#example2',
 				data:{
@@ -41,6 +53,68 @@
 					}
 				}
 			});
+			//计算属性
+			var vm3 = new Vue({
+				el:'#example3',
+				data:{
+					isActive:true,
+					error:null
+				},
+				computed:{
+				    classObject1: function (){
+				    	return {
+						    active: this.isActive && !this.error,
+						    'text-danger': !this.error 
+				    	}
+					}
+				}
+			});
+			//绑定数组对象，同时设置多个class 列表，
+			//根据条件切换class时，可以用三元表达式
+			//数组内套用对象语法，实现多个条件class的切换
+			var vm4 = new Vue({
+				el:'#example4',
+				data:{
+					isActive:true,
+					activeClass:'active',
+					errorClass:'error'
+				}
+			});
+			
+			////向组件上添加class方法：
+			//1.直接写class名字到组件上，会添加上组件的根元素上，原有的class类不会被覆盖
+			//2.也可以v-bind：class='',
+			Vue.component('my-component',{
+//				data:{
+//					isActive:true
+//				},
+				templete:'<p class="foo bar">HI</P>'
+			});
+			
+			
+			//二，绑定style到数据
+			//基本语法同绑定class一致，用小驼峰或-
+			//直接绑定到样式对象，更清晰明了
+			//绑定多个样式对象，列表形式 <div v-bind:style="[baseStyles, overridingStyles]">
+			//当 v-bind:style 使用需要特定前缀的 CSS 属性时，如 transform ，Vue.js 会自动侦测并添加相应的前缀。
+			var vm5 = new Vue({
+				el:'#example5',
+				data:{
+					activeColor: 'red',
+  					fontSize: 30
+				}
+			});
+			var vm6 = new Vue({
+				el:'#example6',
+				data:{
+					styleObject:{
+						color: 'blue',
+	  					fontSize: '30px'
+					}
+				}
+			});
 		</script>
+			<my-component v-bind:class="{active:isActive}"></my-component>
+		
 	</body>
 </html>
