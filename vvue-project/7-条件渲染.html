@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--模版编译渲染-->
+		<!--条件渲染:根据表达式值：真假来决定显示与否?
+			1.v-if='':只有时true时，才真正渲染，--切换时消耗--如果运行时，条件不大可能变就用v-if，反之频繁切换用v-show
+			2.v-show=''--不管是否为真都会被编译并保留（初始渲染消耗），显示与否，是css的display:block,none
+		-->
+		<!--单个模版语句切换-->
+		<h1 v-if='ok'>yes</h1>
+		<h1 v-else-if='oo'>else-if</h1>
+		<h1 v-else>no</h1>
+		<!--切换多个元素
+			<templete>当作包裹元素，但最终渲染结果不会包含templete
+			绑定v-if:条件组	
+		-->
+		<templete v-if='ok'>
+			<h1>title</h1>
+			<p>Paragraph 1</p>
+			<p>Paragraph 2</p>
+		</templete>
+		
+		<!--注意：vue会复用已有元素而不是从头开始渲染这个元素-->
+		<template v-if="loginType === 'username'">
+	  		<label>Username</label>
+		  	<input placeholder="Enter your username">
+		</template>
+		<template v-else>
+		  	<label>Email</label>
+		  	<input placeholder="Enter your email address">
+		</template>
+		<!--上例中 label,input都会被复用
+			不想复用：元素添加key='唯一值'
+		-->
+		<template v-if="loginType === 'username'">
+		  <label>Username</label>
+		  <input placeholder="Enter your username" key="username-input">
+		</template>
+		<template v-else>
+		  <label>Email</label>
+		  <input placeholder="Enter your email address" key="email-input">
+		</template>
+		
+		<!--
+			
+		v-show:用法大体上一样
+		-->
+		<h1 v-show="ok">Hello!</h1>
+	</body>
+</html>
