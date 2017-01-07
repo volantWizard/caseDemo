@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--列表渲染--根据：数组的选项列表、对象属性列表、指定渲染次数的整数等渲染
+			1/基本用法：渲染单个元素块
+			2/渲染多个元素快
+			3/组件渲染
+		-->
+		<!--
+			数组更新检测
+			1#变异方法---vue能识别这些方法，感知到（数据）数组的变化，从而触发试图更新：
+				push()
+				unshift()
+				pop()
+				shift()
+				splice()删除替换
+				sort()
+				reverse()
+			2#非变异方法（不改变原数组，但返回一个新数组，来替换原数组）--	重塑数组
+			
+			3#注意事项
+				当使用下列方法时：vue无法感知数组的变动，不会触发试图的更新
+				1. 索引值改变某一项 vm.items[indexOfitem] = newValue
+				2. 修改数组长度 vm.items.length = newLength
+				
+				3. 避免：
+					第一种情况：
+					Vue.set(example1.items,indexOfItem,newValue)
+					example1.items.splice(indexOfItem,1,newValue)
+					第二种情况
+					example1.items.splice(length)
+				
+				
+				
+		-->
+		<ul id="example-1">
+			<li v-for='item in items'>{{item.message}}</li>
+		</ul>
+		
+		<ul id="example-2">
+			<li v-for='(item,index) in items'>{{parentMessage}}-{{index}}-{{item.message}}</li>
+		</ul>
+		
+		<ul id="example-3">
+			<template v-for='(item,index) in items'>
+				<li>{{item.msg}}</li>
+				<li class="divider">{{index}}</li>
+			</template>
+		</ul>
+		
+		<ul id="example-4">
+			<template v-for='(value,key,index) in items'>
+				<li class="divider">{{key}}-{{index}}</li>
+				<li>{{value}}</li>
+			</template>
+		</ul>
+		<ul id="example-5">
+			<li v-for='n in 20'>{{n}}</li>
+		</ul>
+		
+		<!--todo list 例子-->
+		<div id="todo-list">
+			<input 
+				v-model='val'
+				v-on:keyup.enter='addNewTodo'
+				placeholder="add a todo" 
+			/>
+			<ul>
+				<li
+					is = 'todo-item'
+					v-for='(todo,index) in todos'
+					v-bind:title = 'todo'
+					v-on:remove='todos.splice(index,1)'
+				></li>
+			</ul>
+		</div>
+		<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var example1 = new Vue({
+				el:"#example-1",
+				data:{
+					items:[
+						{message:'foo'},
+						{message:'bar'}
+					]
+				}
+			});
+			//注意：v-for 块中，我们拥有父作用域属性的完全访问权，支持可选的第二个参数，当然如果是渲染的对象的化，可接受三个参数
+			var example2 = new Vue({
+				el:"#example-2",
+				data:{
+					parentMessage:'Parent',
+					items:[
+						{message:'foo'},
+						{message:'bar'}
+					]
+				}
+			});
+			
+			//同时渲染多个元素块---用templete包裹
+			var example3 = new Vue({
+				el:"#example-3",
+				data:{
+					parentMessage:'Parent',
+					items:[
+						{msg:'foo'},
+						{msg:'bar'}
+					]
+				}
+			});
+			
+			//obj迭代
+			var example4 = new Vue({
+				el:"#example-4",
+				data:{
+					parentMessage:'Parent',
+					items:{
+						cui:'women',
+						duyu:'men',
+						age:30
+					}
+				}
+			});
+			
+			//整数迭代
+			var example5 = new Vue({
+				el:"#example-5",
+			});
+			
+			//迭代组件---注意不能自动传递数据到组件里，用props
+			Vue.component('todo-item', {
+			    template:'\
+			    	<li>\
+			    		{{title}}\
+			    		<button v-on:click="$emit(\'remove\')">X</button>\
+			    	</li>\
+			    ',
+			    props:['title']
+			});
+			
+			new Vue({
+				el:'#todo-list',
+				data:{
+					val:'',
+					todos:[
+						'Do the dishes',
+						'asdf',
+						'afwerfe'
+					]
+				},
+				methods:{
+					addNewTodo:function(){
+						this.todos.push(this.val);
+						this.val = '';
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
