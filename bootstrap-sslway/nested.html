@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>sslWay</title>
+		<meta name="Description" content=""/>
+		<meta name="Keywords" content=""/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="author" content=""/>
+		<meta http-equiv="X-UA-Compatible" content="IE-edge">
+		<!--网页图标-->
+		<link rel="icon" href=""/>
+		<!--wap端图标 -->
+		<link rel="apple-touch-icon" href="" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<!--[if lt IE 9]>
+			<script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+			<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				
+				<div class="col-md-8" style="background: yellow ; height: 100px;">
+					<!--<div class="row">-->
+						<div style="background: red;">.col-md-8</div>
+					<!--</div>-->
+					<div class="row" style="background: blue;">
+						<div class="col-md-6">6</div>
+						<div class="col-md-6">6</div>
+					</div>
+				</div>	
+				<div class="col-md-4">
+					clm-md-6
+				</div>	
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-sm-3">
+					.col-xs-6 .col-sm-3
+					<br />
+					Resize your viewport or check it out on your phone for an example.
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					.col-xs-6 .col-sm-3
+				</div>
+				<!--visible很有用，决定在何种情况下可见
+					clearfix，清楚浮动用
+				-->
+				<div class="clearfix visible-xs-block"></div>
+				<div class="col-xs-6 col-sm-3">
+					.col-xs-6 .col-sm-3
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					.col-xs-6 .col-sm-3
+				</div>
+			</div>
+			<hr />
+			<!--当xs-/-ms-类没有指定的时候，会默认为堆叠起来-->
+			<div class="row">
+				<div class="col-sm-5 col-md-6">.col-sm-5.col-md-6</div>
+				<div class="col-sm-5 col-md-6 col-sm-offset-2 col-md-offset-0" style="background: blue;">.col-sm-5.col-md-6</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6 col-md-5 col-lg-6">.col-sm-5.col-md-6</div>
+				<div class="col-sm-6 col-md-5 col-lg-6 col-md-offset-2 col-lg-offset-0" style="background: blue;">
+					col-sm-6 col-md-5 col-lg-6 col-md-offset-2 col-lg-offset-0
+				</div>
+			</div>
+		</div>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>
