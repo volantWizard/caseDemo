@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<div class="main" style="width: 400px; height: 300px;"></div>
+		<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var chart1 = echarts.init(document.getElementsByClassName('main')[0]);
+			var option = {
+				title:{
+					text:'echarts入门实例'
+				},
+				tooltip:{
+					
+				},
+				//注意这里的data内的数据要和series相对应，否则报错
+				legend:{
+					data:['销量','计划']
+				},
+				xAxis: {
+                	data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+	            },
+	            yAxis: {},
+	            series: [{
+	                name: '销量',
+	                type: 'bar',
+	                data: [5, 20, 36, 10, 10, 20]
+	            },{
+	            	name: '计划',
+	                type: 'line',
+	                data: [5, 30, 39, 20, 15, 20]
+	            }]
+			}
+			chart1.setOption(option);
+		</script>
+	</body>
+</html>
